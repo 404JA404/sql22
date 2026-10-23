@@ -1,0 +1,116 @@
+create database obsi;
+
+use obsi;
+
+create table usuarios (
+     user_id INT AUTO_INCREMENT primary key,
+     username varchar(10) not null,
+     name varchar(20) not null,
+     email varchar(20) not null
+);
+
+
+
+INSERT INTO usuarios (username, name, email) VALUES 
+( 'Anonymous' , 'Jane Doe' , 'jane.doe@example.com' ), 
+( 'emmissing' , 'Emily Smith' , 'emily@mail.com' ), 
+( 'carlos_m' , 'Carlos Mendoza' , 'carlos@example.net' ), 
+( 'ana_silva' , 'Ana Silva' , 'ana.@webmail.com' ), 
+( 'david_k' , 'Kovacs' , 'david.k@domain.org' ), 
+( 'lisa_b' , 'Lisa pain' , 'lisa.b@cartoon.com' ), 
+( 'marcos_p' , 'Pérez' , 'marco@service.com' ), 
+( 'sophie_t' , 'Taylor' , 'sophie.t@example.com' ), 
+( 'alexJ' , 'Jones' , 'alex.jones@news.net' ), 
+( 'lucia_g' , 'Lucíana' , 'luci@mail.org' );
+
+create index idxusername_email on usuarios (username, email);
+
+EXPLAIN SELECT * FROM usuarios WHERE email = 'jane.doe@example.com' and username = 'Anonymous';
+
+-- SELECT generico -> Table scan on usuarios (cost=1.35 rows=11)
+
+-- Sin indice -> Filter: (usuarios.username = 'Anonymous') (cost=1.35 rows=1.1)
+--             -> Table scan on usuarios (cost=1.35 rows=11)
+
+-- Con indice -> Index lookup on usuarios using idx_username (username = 'Anonymous')
+
+## Punto 1
+
+
+
+```sql
+USE practica_indices;
+
+SELECT * FROM cliente;
+```
+
+
+
+```sql
+SHOW INDEX FROM cliente;
+```
+
+
+## Punto 3
+
+```sql
+CREATE INDEX idx_cliente_activo
+ON cliente (activo);
+```
+
+
+
+## Punto 4
+
+```sql
+SELECT cliente_id, nombre, apellido, activo
+FROM cliente
+WHERE activo = 1;
+
+EXPLAIN
+SELECT cliente_id, nombre, apellido, activo
+FROM cliente
+WHERE activo = 1;
+```
+
+
+## Punto 5
+
+```sql
+CREATE INDEX idx_cliente_fecha
+ON cliente (fecha_registro);
+```
+
+**Respuesta:** Se crea un índice sobre `fecha_registro` para facilitar determinadas búsquedas de clientes según su fecha de registro.
+
+## Punto 6
+
+```sql
+SELECT cliente_id, nombre, apellido, fecha_registro
+FROM cliente
+WHERE fecha_registro BETWEEN '2025-03-01' AND '2025-06-30';
+```
+
+**Respuesta:** La consulta muestra los clientes registrados entre el 1 de marzo de 2025 y el 30 de junio de 2025, incluyendo ambas fechas.
+
+## Punto 7
+
+```sql
+CREATE INDEX idx_cliente_ciudad_activo
+ON cliente (ciudad, activo);
+```
+
+
+## Punto 9
+
+```sql
+EXPLAIN
+SELECT cliente_id, nombre, apellido
+FROM cliente
+WHERE ciudad = 'Manizales'
+AND activo = 1;
+```
+
+## Punto 10
+
+los indices son acortadores para agilisar el trabajo
