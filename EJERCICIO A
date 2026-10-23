@@ -1,0 +1,52 @@
+create database time;
+
+use time;
+
+CREATE TABLE cliente (
+    cliente_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    fecha_registro DATE NOT NULL
+);
+
+
+DROP TABLE IF EXISTS cliente;
+
+CREATE TABLE cliente (
+    cliente_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    fecha_registro DATE NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    activo TINYINT(1) NOT NULL DEFAULT 1
+);
+
+-- 2. Inserción de datos de prueba
+INSERT INTO cliente (nombre, apellido, fecha_registro, ciudad, activo) VALUES
+('Carlos', 'Jane Doe', '2025-01-15', 'Pereira', 1),
+('Ana', 'Martínez', '2025-02-20', 'Bogotá', 1),
+('Luis', 'Rodríguez', '2025-03-10', 'Pereira', 0),
+('Sofía', 'López', '2025-04-05', 'Medellín', 1),
+('María', 'Fernández', '2025-05-02', 'Pereira', 1),
+('Javier', 'Torres', '2025-05-18', 'Manizales', 1),
+('Elena', 'Ramírez', '2025-06-01', 'Pereira', 1),
+('Diego', 'Morales', '2025-06-25', 'Cali', 0);
+
+CREATE INDEX idx_ciudad_activo ON cliente(ciudad, activo);
+
+
+SELECT cliente_id, nombre, apellido
+FROM cliente
+WHERE ciudad = 'Pereira' AND activo = 1;
+
+EXPLAIN SELECT cliente_id, nombre, apellido
+FROM cliente
+WHERE ciudad = 'Pereira' AND activo = 1;
+CREATE INDEX idx_fecha_registro ON cliente(fecha_registro);
+
+SELECT cliente_id, nombre, fecha_registro
+FROM cliente
+WHERE fecha_registro >= '2025-05-01';
+
+EXPLAIN SELECT cliente_id, nombre, fecha_registro
+FROM cliente
+WHERE fecha_registro >= '2025-05-01';
