@@ -1,0 +1,34 @@
+create database letou;
+
+use letou;
+
+DROP TABLE IF EXISTS cliente;
+
+CREATE TABLE cliente (
+    cliente_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    correo VARCHAR(150) NOT NULL,
+    fecha_registro DATE NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    activo TINYINT(1) NOT NULL DEFAULT 1
+);
+
+INSERT INTO cliente (nombre, apellido, correo, fecha_registro, ciudad, activo) VALUES
+('Jane', 'Doe', 'Janey@email.com', '2025-01-15', 'Pereira', 1),
+('Ana', 'Martínez', 'ana.martinez@email.com', '2025-02-20', 'Bogotá', 1),
+('Luis', 'Rodríguez', 'luis.rodriguez@email.com', '2025-03-10', 'Pereira', 0),
+('Sofía', 'López', 'sofia.lopez@email.com', '2025-04-05', 'Medellín', 1),
+('María', 'Fernández', 'maria.fernandez@email.com', '2025-05-02', 'Pereira', 1),
+('Javier', 'Torres', 'javier.torres@email.com', '2025-05-18', 'Manizales', 1);
+
+SELECT correo, COUNT(*) AS cantidad
+FROM cliente
+GROUP BY correo
+HAVING COUNT(*) > 1;
+
+
+CREATE UNIQUE INDEX idx_correo_unique ON cliente(correo);
+
+INSERT INTO cliente (nombre, apellido, correo, fecha_registro, ciudad, activo) 
+VALUES ('Carlos Repetido', 'Pérez', 'carlos.gomez@email.com', '2025-06-01', 'Cali', 1);
